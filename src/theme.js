@@ -1,25 +1,21 @@
-import { createTheme } from '@mui/material/styles';
-import { pink } from '@mui/material/colors';
+import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
 
 // Create a theme instance.
-const theme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#556cd6'
+const theme = extendTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: '#057846'
+        }
+      }
     },
-    secondary: {
-      main: '#f48fb1'
-    },
-    error: {
-      main: '#f48fb1'
-    },
-    warning: {
-      main: '#f48fb1'
-    },
-    text: {
-      primary: '#f48fb1',
-      secondary: pink
+    dark: {
+      palette: {
+        primary: {
+          main: '#bd0b14'
+        }
+      }
     }
   }
 });

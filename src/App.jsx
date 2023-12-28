@@ -3,11 +3,15 @@ import { Home } from '@mui/icons-material';
 import { pink } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
 
+import ModeToggle from './ModeToggle';
+
 function App() {
   return (
     <>
+      <ModeToggle />
+      <br />
       <h1>Bui Thanh Liem</h1>
-      <Button variant="contained">Hello world</Button>
+      <Button variant="contained" color='primary'>Hello world</Button>
       <br />
       <Button variant="outlined">Hello world</Button>
       <br />
