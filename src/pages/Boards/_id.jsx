@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 
-import AppBar from '../../components/AppBar/idnex';
+import AppBar from '~/components/AppBar/';
 import BoardBar from './BoardBar';
 import BoardContent from './BoardContent';
 

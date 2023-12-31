@@ -14,6 +14,7 @@ const AppBar = () => {
       }}
     >
       <DarkModeSelect />
+      App Bar
     </Box>
   );
 };
