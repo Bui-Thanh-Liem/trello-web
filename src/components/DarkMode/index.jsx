@@ -4,10 +4,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
+// import useMediaQuery from '@mui/material/useMediaQuery';
 import { LightMode, DarkMode, SettingsBrightness } from '@mui/icons-material';
 
 function DarkModeSelect() {
   const { mode, setMode } = useColorScheme();
+
+  // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: light)');
 
   // Handle change events
   const handleChange = (event) => {
