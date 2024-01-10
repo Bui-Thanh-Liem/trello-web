@@ -34,7 +34,7 @@ const AppBar = () => {
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <AppsIcon sx={{ color: 'primary.main' }} />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <SvgIcon component={trelloIcon} sx={{ color: 'primary.main' }} />
+          <SvgIcon component={trelloIcon} fontSize='small' sx={{ color: 'primary.main' }} />
           <Typography
             variant="span"
             sx={{
@@ -65,11 +65,11 @@ const AppBar = () => {
         <DarkModeSelect />
         <Tooltip title="Notifications">
           <Badge color="secondary" variant="dot">
-            <NotificationsNoneIcon />
+            <NotificationsNoneIcon color='primary'/>
           </Badge>
         </Tooltip>
         <Tooltip title="Informations">
-          <HelpOutlineIcon />
+          <HelpOutlineIcon color='primary'/>
         </Tooltip>
         <Profiles />
       </Box>

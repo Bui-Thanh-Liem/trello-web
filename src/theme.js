@@ -20,6 +20,42 @@ const theme = extendTheme({
         secondary: orange
       }
     }
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none'
+        }
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          fontSize: '0.875rem'
+        })
+      }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          fontSize: '0.875rem',
+          color: theme.palette.primary.main,
+          '.MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.primary.main
+          }
+          // '&:hover': {
+          //   '.MuiOutlinedInput-notchedOutline': {
+          //     borderColor: 'red'
+          //   }
+          // }
+          // '& fieldset': {
+          //   borderWidth: '1px !important '
+          // }
+        })
+      }
+    }
   }
 });
 
