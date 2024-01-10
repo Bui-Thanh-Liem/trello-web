@@ -28,13 +28,19 @@ const AppBar = () => {
         height: (theme) => theme.customTrello.appBarHeight,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        gap: 2,
+        overflow: 'auto'
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <AppsIcon sx={{ color: 'primary.main' }} />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <SvgIcon component={trelloIcon} fontSize='small' sx={{ color: 'primary.main' }} />
+          <SvgIcon
+            component={trelloIcon}
+            fontSize="small"
+            sx={{ color: 'primary.main' }}
+          />
           <Typography
             variant="span"
             sx={{
@@ -46,11 +52,13 @@ const AppBar = () => {
             Trello
           </Typography>
         </Box>
-        <Workspaces />
-        <Recent />
-        <Starred />
-        <Templates />
-        <Button variant="contained">Create</Button>
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+          <Workspaces />
+          <Recent />
+          <Starred />
+          <Templates />
+          <Button variant="contained">Create</Button>
+        </Box>
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -60,16 +68,17 @@ const AppBar = () => {
             label="Search..."
             size="small"
             variant="outlined"
+            sx={{ minWidth: 120 }}
           />
         </Tooltip>
         <DarkModeSelect />
         <Tooltip title="Notifications">
           <Badge color="secondary" variant="dot">
-            <NotificationsNoneIcon color='primary'/>
+            <NotificationsNoneIcon color="primary" />
           </Badge>
         </Tooltip>
         <Tooltip title="Informations">
-          <HelpOutlineIcon color='primary'/>
+          <HelpOutlineIcon color="primary" />
         </Tooltip>
         <Profiles />
       </Box>
