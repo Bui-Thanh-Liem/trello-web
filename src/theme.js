@@ -4,8 +4,8 @@ import { teal, deepOrange, cyan, orange } from '@mui/material/colors';
 // Create a theme instance.
 const theme = extendTheme({
   customTrello: {
-    appBarHeight: '58px',
-    BoardBarHeight: '58px'
+    appBarHeight: '54px',
+    boardBarHeight: '56px'
   },
   colorSchemes: {
     light: {
@@ -47,9 +47,9 @@ const theme = extendTheme({
     },
     MuiButton: {
       styleOverrides: {
-        root: {
+        root: () => ({
           textTransform: 'none'
-        }
+        })
       }
     },
     MuiInputLabel: {

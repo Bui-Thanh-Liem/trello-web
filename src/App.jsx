@@ -1,7 +1,11 @@
 import Broad from './pages/Boards/_id';
 
 function App() {
-  return <Broad />;
+  return (
+    <>
+      <Broad />
+    </>
+  );
 }
 
 export default App;

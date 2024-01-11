@@ -6,13 +6,13 @@ const BoardContent = () => {
       sx={{
         width: '100%',
         height: (theme) =>
-          `calc(100vh - ${theme.customTrello.appBarHeight} - ${theme.customTrello.BoardBarHeight})`,
+          `calc(100vh - ${theme.customTrello.appBarHeight} - ${theme.customTrello.boardBarHeight})`,
         bgcolor: 'primary.main',
         display: 'flex',
         alignItems: 'center'
       }}
     >
-      Board-Content
+      <Box>Board-Content</Box>
     </Box>
   );
 };
