@@ -9,6 +9,7 @@ import {
 import AppsIcon from '@mui/icons-material/Apps';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import SvgIcon from '@mui/material/SvgIcon';
 
 import DarkModeSelect from '~/components/DarkMode';
@@ -22,15 +23,16 @@ import Profiles from './menus/Profiles';
 const AppBar = () => {
   return (
     <Box
-      px={2}
       sx={{
         width: '100%',
+        paddingX: '1rem',
         height: (theme) => theme.customTrello.appBarHeight,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 2,
-        overflow: 'auto'
+        overflow: 'auto',
+        borderBottom: (theme) => `1px solid ${theme.palette.primary.main}`
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -57,7 +59,8 @@ const AppBar = () => {
           <Recent />
           <Starred />
           <Templates />
-          <Button variant="contained">Create</Button>
+          <Button variant="contained" endIcon={<LibraryAddIcon />}>Create</Button>
+          {/* <Button variant="contained"><LibraryAddIcon /></Button> */}
         </Box>
       </Box>
 
