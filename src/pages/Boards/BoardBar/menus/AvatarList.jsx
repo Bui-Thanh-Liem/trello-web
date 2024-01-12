@@ -12,7 +12,15 @@ export default function AvatarList() {
     <AvatarGroup
       max={4}
       sx={{
-        '& .MuiAvatar-root': { width: '2rem', height: '2rem', fontSize: '1rem' }
+        '& .MuiAvatar-root': {
+          width: '2rem',
+          height: '2rem',
+          fontSize: '1rem',
+          '&:first-of-type': {
+            bgcolor: '#a4b0be'
+          }
+        },
+        cursor: 'pointer'
       }}
     >
       <Avatar alt="Remy Sharp" src={ava} />

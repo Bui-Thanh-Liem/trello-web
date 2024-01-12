@@ -1,18 +1,22 @@
 import { Box } from '@mui/material';
+//
+import Columns from './Columns';
 
 const BoardContent = () => {
   return (
     <Box
       sx={{
         width: '100%',
-        height: (theme) =>
-          `calc(100vh - ${theme.customTrello.appBarHeight} - ${theme.customTrello.boardBarHeight})`,
+        height: (theme) => theme.customTrello.boardContentHeight,
+        marginTop: (theme) => theme.customTrello.appBarHeight,
         bgcolor: 'primary.main',
-        display: 'flex',
-        alignItems: 'center'
+        paddingTop: '.7rem',
+        paddingBottom: '.7rem',
+        maxWidth: '100vw',
+        overflowX: 'auto'
       }}
     >
-      <Box>Board-Content</Box>
+      <Columns />
     </Box>
   );
 };
