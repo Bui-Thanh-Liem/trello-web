@@ -24,6 +24,10 @@ const AppBar = () => {
   return (
     <Box
       sx={{
+        position: 'fixed',
+        top: 0,
+        right: 0,
+        left: 0,
         width: '100%',
         paddingX: '1rem',
         height: (theme) => theme.customTrello.appBarHeight,

@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Tooltip } from '@mui/material';
 import React from 'react';
 
 export default function NameBoard({ name }) {
@@ -30,17 +30,19 @@ export default function NameBoard({ name }) {
           }}
         />
       ) : (
-        <Button
-          sx={{
-            '&:hover': { bgcolor: '#e0f2f0' },
-            fontWeight: 'bold',
-            fontSize: '1.2rem',
-            lineHeight: 1.2
-          }}
-          onClick={() => setShowInput(true)}
-        >
-          {textField}
-        </Button>
+        <Tooltip title="Click To change">
+          <Button
+            sx={{
+              '&:hover': { bgcolor: '#e0f2f0' },
+              fontWeight: 'bold',
+              fontSize: '1.2rem',
+              lineHeight: 1.2
+            }}
+            onClick={() => setShowInput(true)}
+          >
+            {textField}
+          </Button>
+        </Tooltip>
       )}
     </>
   );

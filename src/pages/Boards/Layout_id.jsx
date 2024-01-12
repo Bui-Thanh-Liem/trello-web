@@ -134,7 +134,14 @@ export default function PersistentDrawerLeft({ bar, content }) {
         open={open}
       >
         <DrawerHeader>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              color: 'primary.main'
+            }}
+          >
             <Avatar
               alt="Bui Thanh Liem"
               src={avatar}
@@ -151,7 +158,7 @@ export default function PersistentDrawerLeft({ bar, content }) {
           </Box>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon color="primary" />
             ) : (
               <ChevronRightIcon />
             )}
@@ -159,7 +166,7 @@ export default function PersistentDrawerLeft({ bar, content }) {
         </DrawerHeader>
 
         <Divider />
-        <List>
+        <List sx={{ color: 'primary.main' }}>
           {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
@@ -172,7 +179,7 @@ export default function PersistentDrawerLeft({ bar, content }) {
           ))}
         </List>
         <Divider />
-        <List>
+        <List sx={{ color: 'primary.main' }}>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
@@ -186,7 +193,7 @@ export default function PersistentDrawerLeft({ bar, content }) {
         </List>
       </Drawer>
 
-      <Main open={open}>
+      <Main open={open} sx={{ maxWidth: '100vw', overflowX: 'auto' }}>
         <DrawerHeader />
         <Box>{content}</Box>
       </Main>
