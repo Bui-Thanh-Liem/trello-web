@@ -20,13 +20,18 @@ function DarkModeSelect() {
 
   return (
     <FormControl size="small" sx={{ minWidth: 120 }}>
-      <InputLabel id="label-select-dark-light-mode">Mode</InputLabel>
+      <InputLabel
+        id="label-select-dark-light-mode"
+      >
+        Mode
+      </InputLabel>
       <Select
         labelId="label-select-dark-light-mode"
         id="select-dark-light-mode"
         value={mode}
         label="Mode"
         onChange={handleChange}
+        sx={{ '&.MuiInputBase-root': { minWidth: 130 } }}
       >
         <MenuItem value={'light'}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

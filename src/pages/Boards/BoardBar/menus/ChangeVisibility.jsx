@@ -1,8 +1,41 @@
 import { useState } from 'react';
-import { Button, Box, Menu, Tooltip } from '@mui/material';
-import { People } from '@mui/icons-material/';
+import {
+  IconButton,
+  Box,
+  Menu,
+  Tooltip,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader
+} from '@mui/material';
+import { People, Public, Lock, Close } from '@mui/icons-material/';
+//
+import {toUpperCaseFirstLetter} from '~/utils/formatters';
+//
+const listItems = [
+  {
+    icon: <Public color="primary" fontSize="small" />,
+    primary: 'public',
+    secondary:
+      'Anyone on the internet can see this board. Only board members can edit.'
+  },
+  {
+    icon: <People color="primary" fontSize="small" />,
+    primary: 'workspace',
+    secondary:
+      'All members of the Trello Workspace can see and edit this board.'
+  },
+  {
+    icon: <Lock color="primary" fontSize="small" />,
+    primary: 'private',
+    secondary: 'Only board members can see and edit this board.'
+  }
+];
 
-export default function ChangeVisibility() {
+export default function ChangeVisibility({ visibility }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -14,7 +47,7 @@ export default function ChangeVisibility() {
 
   return (
     <Box>
-      <Button
+      <IconButton
         id="basic-button-recent"
         aria-controls={open ? 'basic-menu-recent' : undefined}
         aria-haspopup="true"
@@ -22,9 +55,9 @@ export default function ChangeVisibility() {
         onClick={handleClick}
       >
         <Tooltip title="Change visibility">
-          <People color="primary" fontSize="small" />
+          {listItems.filter((item) => item.primary === visibility)[0]?.icon}
         </Tooltip>
-      </Button>
+      </IconButton>
       <Menu
         id="basic-menu-recent"
         anchorEl={anchorEl}
@@ -34,7 +67,37 @@ export default function ChangeVisibility() {
           'aria-labelledby': 'basic-button-recent'
         }}
       >
-        <Box sx={{ padding: '2rem' }}>Change Visibility</Box>
+        <Box>
+          <List sx={{ '&.MuiList-root': { paddingY: 0 } }}>
+            <ListSubheader
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              Change Visibility
+              <Close sx={{ cursor: 'pointer' }} onClick={handleClose} />
+            </ListSubheader>
+            {listItems.map((item, index) => (
+              <ListItem
+                key={index}
+                sx={{
+                  '&.MuiListItem-root': { padding: 0 },
+                  '& .MuiButtonBase-root': { padding: '0 1rem' }
+                }}
+              >
+                <ListItemButton>
+                  <ListItemIcon>{item?.icon}</ListItemIcon>
+                  <ListItemText
+                    primary={toUpperCaseFirstLetter(item.primary)}
+                    secondary={item.secondary}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Menu>
     </Box>
   );

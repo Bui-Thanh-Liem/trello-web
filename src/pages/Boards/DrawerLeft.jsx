@@ -66,7 +66,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'space-between'
 }));
 
-export default function PersistentDrawerLeft({ bar, content }) {
+export default function DrawerLeft({ bar, content }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -107,8 +107,7 @@ export default function PersistentDrawerLeft({ bar, content }) {
           >
             <KeyboardArrowRight
               sx={{
-                color: 'primary.main',
-                bgcolor: 'primary.50',
+                bgcolor: 'primary.dark',
                 borderRadius: '50%'
               }}
             />

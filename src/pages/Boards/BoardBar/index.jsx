@@ -1,5 +1,5 @@
-import { Box, Chip, Checkbox, Divider, Tooltip } from '@mui/material';
-import { StarBorder, Star, SpaceDashboard } from '@mui/icons-material';
+import { Box, Chip, Divider, Tooltip, IconButton } from '@mui/material';
+import { SpaceDashboard } from '@mui/icons-material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 //
@@ -11,9 +11,10 @@ import Automation from './menus/Automation';
 import Fillter from './menus/Fillter';
 import AvatarList from './menus/AvatarList';
 import Share from './menus/Share';
+import StarFavourite from './menus/Star';
 
 //
-function BoardBar() {
+function BoardBar({ board }) {
   return (
     <Box
       sx={{
@@ -28,13 +29,10 @@ function BoardBar() {
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Box sx={{ marginLeft: '1.5rem' }}>
-          <NameBoard name="Study MERN" />
+          <NameBoard name={board?.title} />
         </Box>
-        <Checkbox
-          icon={<StarBorder color="primary" fontSize="small" />}
-          checkedIcon={<Star fontSize="small" />}
-        />
-        <ChangeVisibility />
+        <StarFavourite checked={board.star} />
+        <ChangeVisibility visibility={board?.type} />
         <Tooltip title="Board">
           <Chip
             color="primary"
@@ -58,7 +56,9 @@ function BoardBar() {
         />
         <AvatarList />
         <Share />
-        <MoreVertIcon color="primary" />
+        <IconButton>
+          <MoreVertIcon color="primary" />
+        </IconButton>
       </Box>
     </Box>
   );

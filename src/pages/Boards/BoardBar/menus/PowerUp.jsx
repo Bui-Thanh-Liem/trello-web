@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Box, Menu, Tooltip } from '@mui/material';
+import { IconButton, Box, Menu, Tooltip } from '@mui/material';
 import RocketLaunch from '@mui/icons-material/RocketLaunch';
 
 export default function PowerUp() {
@@ -14,17 +14,18 @@ export default function PowerUp() {
 
   return (
     <Box>
-      <Button
+      <IconButton
+        sx={{ color: 'primary.main' }}
         id="basic-button-recent"
         aria-controls={open ? 'basic-menu-recent' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <Tooltip title='Power-Ups'>
-          <RocketLaunch />
+        <Tooltip title="Power-Ups">
+          <RocketLaunch fontSize="small" />
         </Tooltip>
-      </Button>
+      </IconButton>
       <Menu
         id="basic-menu-recent"
         anchorEl={anchorEl}

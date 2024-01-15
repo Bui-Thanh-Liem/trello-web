@@ -1,15 +1,19 @@
 import { Container } from '@mui/material';
-
+//
 import AppBar from '~/components/AppBar/';
 import BoardBar from './BoardBar';
 import BoardContent from './BoardContent';
-import Layout_id from './Layout_id';
+import DrawerLeft from './DrawerLeft';
+import { mockData } from '~/apis/mockData';
 
 const Broad = () => {
   return (
     <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
       <AppBar />
-      <Layout_id bar={<BoardBar />} content={<BoardContent />}/>
+      <DrawerLeft
+        bar={<BoardBar board={mockData?.board} />}
+        content={<BoardContent board={mockData?.board} />}
+      />
     </Container>
   );
 };

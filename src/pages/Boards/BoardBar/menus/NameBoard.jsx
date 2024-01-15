@@ -1,33 +1,42 @@
-import { Button, TextField, Tooltip } from '@mui/material';
 import React from 'react';
+import { Button, Tooltip, Input } from '@mui/material';
 
 export default function NameBoard({ name }) {
   const [showInput, setShowInput] = React.useState(false);
   const [textField, setTextField] = React.useState(name);
 
   const handleChangeTextField = (e) => {
-    if (e.target.value.length === 40) {
-      return;
-    }
-    setTextField(e.target.value);
+    e.target.value.length > 40 ? '' : setTextField(e.target.value);
+  };
+
+  const handleCloseInputWhenNull = () => {
+    setTextField(name);
+    setShowInput(false);
   };
 
   return (
     <>
       {showInput ? (
-        <TextField
-          size="small"
-          label="Change name board"
-          variant="outlined"
+        <Input
+          sx={{ color: 'primary.main', fontWeight: 'bold' }}
           value={textField}
           autoFocus={true}
+          size="small"
           onChange={handleChangeTextField}
           onKeyDown={(e) => {
-            if (e.keyCode === 13 && textField !== '') setShowInput(false);
+            if (e.keyCode === 13) {
+              textField.trim() === ''
+                ? handleCloseInputWhenNull()
+                : setShowInput(false);
+            }
           }}
           onBlur={() => {
-            if (textField !== '') setShowInput(false);
+            textField.trim() === ''
+              ? handleCloseInputWhenNull()
+              : setShowInput(false);
           }}
+          placeholder=""
+          variant="plain"
         />
       ) : (
         <Tooltip title="Click To change">

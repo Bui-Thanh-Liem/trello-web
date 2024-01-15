@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   MenuList,
-  Button,
+  IconButton,
   Box,
   Menu,
   MenuItem,
@@ -25,17 +25,18 @@ export default function UpgradeForViews() {
 
   return (
     <Box>
-      <Button
+      <IconButton
+        sx={{ color: 'primary.main' }}
         id="basic-button-recent"
-        aria-controls={open ? 'basic-menu-recent' : undefined}
         aria-haspopup="true"
+        aria-controls={open ? 'basic-menu-recent' : undefined}
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
         <Tooltip title="Customize views">
           <KeyboardArrowDownIcon />
         </Tooltip>
-      </Button>
+      </IconButton>
       <Menu
         id="basic-menu-recent"
         anchorEl={anchorEl}

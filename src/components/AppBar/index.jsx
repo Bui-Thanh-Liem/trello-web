@@ -4,7 +4,8 @@ import {
   Button,
   TextField,
   Badge,
-  Tooltip
+  Tooltip,
+  IconButton
 } from '@mui/material';
 import AppsIcon from '@mui/icons-material/Apps';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
@@ -63,7 +64,9 @@ const AppBar = () => {
           <Recent />
           <Starred />
           <Templates />
-          <Button variant="contained" endIcon={<LibraryAddIcon />}>Create</Button>
+          <Button variant="contained" endIcon={<LibraryAddIcon />}>
+            Create
+          </Button>
           {/* <Button variant="contained"><LibraryAddIcon /></Button> */}
         </Box>
       </Box>
@@ -80,12 +83,16 @@ const AppBar = () => {
         </Tooltip>
         <DarkModeSelect />
         <Tooltip title="Notifications">
-          <Badge color="secondary" variant="dot">
-            <NotificationsNoneIcon color="primary" />
-          </Badge>
+          <IconButton>
+            <Badge color="secondary" variant="dot">
+              <NotificationsNoneIcon color="primary" />
+            </Badge>
+          </IconButton>
         </Tooltip>
         <Tooltip title="Informations">
-          <HelpOutlineIcon color="primary" />
+          <IconButton>
+            <HelpOutlineIcon color="primary" />
+          </IconButton>
         </Tooltip>
         <Profiles />
       </Box>
