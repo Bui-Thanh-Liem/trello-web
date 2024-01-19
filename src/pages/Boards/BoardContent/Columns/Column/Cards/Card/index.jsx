@@ -7,6 +7,8 @@ import {
   Button
 } from '@mui/material';
 import { PeopleAlt, Comment, Attachment } from '@mui/icons-material';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 //
 
 export default function Card({ card }) {
@@ -18,16 +20,39 @@ export default function Card({ card }) {
     );
   };
 
+  // drag and drop
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: card._id, data: { ...card } });
+  const dndkitCardStyles = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1
+  };
+
   return (
     <>
       <CardMUI
+        ref={setNodeRef}
+        style={dndkitCardStyles}
+        {...attributes}
+        {...listeners}
         sx={{
           cursor: 'pointer',
           overflow: 'unset',
           boxShadow: '1px 1px rgba(0, 0, 0, .2)',
           border: '1px solid transparent',
           '&:hover': {
-            borderColor: 'primary.light'
+            boxShadow: (theme) =>
+              `0px 0px 2px 2px ${theme.palette.primary.light}`
+          },
+          '&:first-of-type': {
+            marginTop: 1
           },
           '&:last-child': {
             marginBottom: 1

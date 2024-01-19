@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import Add from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/Add';
 import {
   SortableContext,
   horizontalListSortingStrategy
@@ -17,7 +17,6 @@ export default function Columns({ columns }) {
       <Box
         sx={{
           display: 'flex',
-          gap: 1.5,
           height: '100%',
           maxWidth: '100vw',
           overflowX: 'auto',
@@ -36,6 +35,7 @@ export default function Columns({ columns }) {
         {/* Button Add Columms */}
         <Box
           sx={{
+            marginLeft: '.7rem',
             borderRadius: '8px',
             bgcolor: '#ffffff3d',
             maxWidth: '272px',
@@ -51,7 +51,7 @@ export default function Columns({ columns }) {
               paddingY: '.6rem',
               color: '#fff'
             }}
-            startIcon={<Add />}
+            startIcon={<AddIcon />}
           >
             Add another list
           </Button>
