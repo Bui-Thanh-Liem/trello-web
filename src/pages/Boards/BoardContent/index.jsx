@@ -6,7 +6,8 @@ import {
   MouseSensor,
   TouchSensor,
   DragOverlay,
-  defaultDropAnimationSideEffects
+  defaultDropAnimationSideEffects,
+  closestCorners
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { useEffect, useState } from 'react';
@@ -193,6 +194,8 @@ const BoardContent = ({ board }) => {
   return (
     <DndContext
       sensors={sensors}
+      // Thuật toán phát hiện va chạm
+      collisionDetection={closestCorners}
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       onDragStart={handleDragStart}
@@ -213,13 +216,9 @@ const BoardContent = ({ board }) => {
         {/* DragOverlay đặt ngang cấp với Sortable và có item bên trong là tất cả SortItem */}
         <DragOverlay dropAnimation={dropAnimation}>
           {activeDragItemId &&
-          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (
-            <Column column={activeDragItemData} />
-          ) : null}
+          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (<Column column={activeDragItemData} />) : null}
           {activeDragItemId &&
-          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD ? (
-            <Card card={activeDragItemData} />
-          ) : null}
+          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD ? (<Card card={activeDragItemData} />) : null}
         </DragOverlay>
       </Box>
     </DndContext>
