@@ -3,7 +3,7 @@ import cauVang from '~/assets/images/cauVang.jpg';
 export const mockData = {
   board: {
     _id: 'board-id-01',
-    title: 'LiemDev MERN Stack Board',
+    title: 'Learning MERN stack',
     description: 'Pro MERN stack Course',
     star: true,
     type: 'public', // 'private'
