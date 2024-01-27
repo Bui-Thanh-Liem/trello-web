@@ -7,10 +7,13 @@ import {
   TouchSensor,
   DragOverlay,
   defaultDropAnimationSideEffects,
-  closestCorners
+  pointerWithin,
+  rectIntersection,
+  closestCorners,
+  getFirstCollision
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { cloneDeep } from 'lodash';
 
 //
@@ -27,6 +30,8 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 const BoardContent = ({ board }) => {
   // MapOrdered
   const [orderedColumnsState, setOrderedColumnsState] = useState([]);
+
+  const lastOverId = useRef(null);
 
   // Tại 1 thời điểm chỉ có card hoặc column
   const [activeDragItemId, setActiveDragItemId] = useState(null);
@@ -274,11 +279,60 @@ const BoardContent = ({ board }) => {
   });
   const sensors = useSensors(mouseSensor, touchSensor);
 
+  // Custom thuật toán phát hiện va chạm (khi dùng closestCorners thì bị flickering khi để con trỏ ở giữa)
+  // Mục đích của thuật toán phát hiện va chạm là trả về overId
+  const collisionDetectionStrategy = useCallback(
+    (args) => {
+      // Nếu là COLUMN thì vẫn sử dụng thuật toán va chạm closestCorners
+      if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+        return closestCorners({ ...args });
+      }
+
+      // Khi là cards thì sử dụng pointerWithin , custom lại thuật toán va chạm
+      // Tìm các điểm giao nhau với con trỏ
+      const pointerIntersections = pointerWithin(args);
+      if (!pointerIntersections?.length > 0) return;
+
+      // Trả về 1 mảng các va chạm ở đây
+      // const intersetions =
+      //   pointerIntersections?.length > 0
+      //     ? pointerIntersections
+      //     : rectIntersection(args);
+
+      let overId = getFirstCollision(pointerIntersections, 'id');
+      if (overId) {
+        const checkColumn = orderedColumnsState.find(
+          (col) => col._id === overId
+        );
+
+        // Đoạn này nếu overId là column thì tìm card gần nhất trong column để lấy id
+        if (checkColumn) {
+          overId = closestCorners({
+            ...args,
+            droppableContainers: args.droppableContainers?.filter(
+              (container) =>
+                container.id !== overId &&
+                checkColumn?.cardOrderIds?.includes(container.id)
+            )
+          })[0]?.id;
+        }
+
+        lastOverId.current = overId;
+
+        return [{ id: overId }];
+      }
+      return lastOverId.current ? [{ id: lastOverId.current }] : [];
+    },
+    [activeDragItemType, orderedColumnsState]
+  );
+
   return (
     <DndContext
       sensors={sensors}
       // Thuật toán phát hiện va chạm
-      collisionDetection={closestCorners}
+      collisionDetection={collisionDetectionStrategy}
+      // collisionDetection={closestCorners}
+
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       onDragStart={handleDragStart}
@@ -299,9 +353,13 @@ const BoardContent = ({ board }) => {
         {/* DragOverlay đặt ngang cấp với Sortable và có item bên trong là tất cả SortItem */}
         <DragOverlay dropAnimation={dropAnimation}>
           {activeDragItemId &&
-          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (<Column column={activeDragItemData} />) : null}
+          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (
+            <Column column={activeDragItemData} />
+          ) : null}
           {activeDragItemId &&
-          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD ? (<Card card={activeDragItemData} />) : null}
+          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD ? (
+            <Card card={activeDragItemData} />
+          ) : null}
         </DragOverlay>
       </Box>
     </DndContext>

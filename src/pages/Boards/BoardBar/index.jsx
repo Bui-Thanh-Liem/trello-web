@@ -23,6 +23,7 @@ function BoardBar({ board }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        // bgcolor: 'white',
         paddingX: 2,
         overflowX: 'auto'
       }}
