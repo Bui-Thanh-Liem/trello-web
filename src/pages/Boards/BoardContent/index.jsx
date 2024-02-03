@@ -13,13 +13,14 @@ import {
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { useCallback, useEffect, useState, useRef } from 'react';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 
 //
 import Columns from './Columns';
 import Column from './Columns/Column';
 import Card from './Columns/Column/Cards/Card';
 import { mapOrder } from '~/utils/sorts';
+import { generatePlaceholderCard } from '~/utils/formatters';
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -96,6 +97,11 @@ const BoardContent = ({ board }) => {
           (card) => card._id !== activeDraggingCardId
         );
 
+        // Thêm placeholder-card nếu column không có card nào
+        if (isEmpty(nextActiveColumn.cards)) {
+          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)];
+        }
+
         // Xóa idCard trong cardOrderIds sau khi xóa cards
         nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
           (column) => column._id
@@ -113,6 +119,9 @@ const BoardContent = ({ board }) => {
           ...activeDraggingCardData,
           columnId: nextOverColumn._id
         });
+
+        // Xóa placeholder-card đi khi đã có card tồn tại
+        nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_placeholderCard);
 
         // Cập nhật idCard trong cardOrderIds sau khi xóa cards
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(
@@ -352,9 +361,13 @@ const BoardContent = ({ board }) => {
         {/* DragOverlay đặt ngang cấp với Sortable và có item bên trong là tất cả SortItem */}
         <DragOverlay dropAnimation={dropAnimation}>
           {activeDragItemId &&
-          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (<Column column={activeDragItemData} />) : null}
+          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (
+            <Column column={activeDragItemData} />
+          ) : null}
           {activeDragItemId &&
-          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD ? (<Card card={activeDragItemData} />) : null}
+          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD ? (
+            <Card card={activeDragItemData} />
+          ) : null}
         </DragOverlay>
       </Box>
     </DndContext>

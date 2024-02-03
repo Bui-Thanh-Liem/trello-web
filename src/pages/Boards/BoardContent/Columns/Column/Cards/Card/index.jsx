@@ -47,6 +47,7 @@ export default function Card({ card }) {
           overflow: 'unset',
           boxShadow: '1px 1px rgba(0, 0, 0, .2)',
           border: '1px solid transparent',
+          display: card?.FE_placeholderCard ? 'none' : 'block',
           '&:hover': {
             boxShadow: (theme) =>
               `0px 0px 2px 2px ${theme.palette.primary.light}`
