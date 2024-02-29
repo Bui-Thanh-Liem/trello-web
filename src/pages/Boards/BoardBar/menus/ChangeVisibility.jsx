@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   IconButton,
   Box,
@@ -18,28 +18,40 @@ import { toUpperCaseFirstLetter } from '~/utils/formatters';
 const listItems = [
   {
     icon: <Public color="primary" fontSize="small" />,
-    primary: 'public',
+    type: 'public',
     secondary:
       'Anyone on the internet can see this board. Only board members can edit.'
   },
   {
     icon: <People color="primary" fontSize="small" />,
-    primary: 'workspace',
+    type: 'workspace',
     secondary:
       'All members of the Trello Workspace can see and edit this board.'
   },
   {
     icon: <Lock color="primary" fontSize="small" />,
-    primary: 'private',
+    type: 'private',
     secondary: 'Only board members can see and edit this board.'
   }
 ];
 
 export default function ChangeVisibility({ visibility }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [visi, setVisi] = useState(null);
+
+  useEffect(() => {
+    setVisi(visibility);
+  }, [visibility]);
+
   const open = Boolean(anchorEl);
+
+  // handle events
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+  const handleClickChangeVisi = (type) => {
+    setVisi(type);
+    setAnchorEl(null);
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -55,7 +67,7 @@ export default function ChangeVisibility({ visibility }) {
         onClick={handleClick}
       >
         <Tooltip title="Change visibility">
-          {listItems.filter((item) => item.primary === visibility)[0]?.icon ||
+          {listItems.filter((item) => item.type === visi)[0]?.icon ||
             listItems[0]?.icon}
         </Tooltip>
       </IconButton>
@@ -88,10 +100,12 @@ export default function ChangeVisibility({ visibility }) {
                   '& .MuiButtonBase-root': { padding: '0 1rem' }
                 }}
               >
-                <ListItemButton>
+                <ListItemButton
+                  onClick={() => handleClickChangeVisi(item.type)}
+                >
                   <ListItemIcon>{item?.icon}</ListItemIcon>
                   <ListItemText
-                    primary={toUpperCaseFirstLetter(item.primary)}
+                    primary={toUpperCaseFirstLetter(item.type)}
                     secondary={item.secondary}
                   />
                 </ListItemButton>

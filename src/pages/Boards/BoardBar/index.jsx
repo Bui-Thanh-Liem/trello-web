@@ -30,9 +30,9 @@ function BoardBar({ board }) {
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Box sx={{ marginLeft: '1.5rem' }}>
-          <NameBoard name={board?.title} />
+          <NameBoard name={board?.title} description={board?.description} />
         </Box>
-        <StarFavourite checked={board?.star} />
+        <StarFavourite checked={board?.star || false} />
         <ChangeVisibility visibility={board?.type} />
         <Tooltip title="Board">
           <Chip

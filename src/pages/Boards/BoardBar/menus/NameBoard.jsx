@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Tooltip, Input } from '@mui/material';
 
-export default function NameBoard({ name }) {
+export default function NameBoard({ name, description }) {
   const [showInput, setShowInput] = React.useState(false);
   const [textField, setTextField] = React.useState('');
 
@@ -43,7 +43,7 @@ export default function NameBoard({ name }) {
           variant="plain"
         />
       ) : (
-        <Tooltip title="Click To change">
+        <Tooltip title={description}>
           <Button
             sx={{
               '&:hover': { bgcolor: '#e0f2f0' },

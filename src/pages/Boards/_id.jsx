@@ -6,14 +6,14 @@ import AppBar from '~/components/AppBar/';
 import BoardBar from './BoardBar';
 import BoardContent from './BoardContent';
 import DrawerLeft from './DrawerLeft';
-import { mockData } from '~/apis/mockData';
+// import { mockData } from '~/apis/mockData';
 import { fetchBoardDetailsAPI } from '~/apis';
 
 const Broad = () => {
   const [board, setBoard] = useState(null);
 
   useEffect(() => {
-    const boardId = '65dae35b8bc14e5495f6cd64';
+    const boardId = '65e009d51e0c8c9ce92f18fd';
 
     // Call API
     fetchBoardDetailsAPI(boardId).then((board) => {
