@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { People, Public, Lock, Close } from '@mui/icons-material/';
 //
-import {toUpperCaseFirstLetter} from '~/utils/formatters';
+import { toUpperCaseFirstLetter } from '~/utils/formatters';
 //
 const listItems = [
   {
@@ -55,7 +55,8 @@ export default function ChangeVisibility({ visibility }) {
         onClick={handleClick}
       >
         <Tooltip title="Change visibility">
-          {listItems.filter((item) => item.primary === visibility)[0]?.icon}
+          {listItems.filter((item) => item.primary === visibility)[0]?.icon ||
+            listItems[0]?.icon}
         </Tooltip>
       </IconButton>
       <Menu

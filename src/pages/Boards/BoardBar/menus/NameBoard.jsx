@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Tooltip, Input } from '@mui/material';
 
 export default function NameBoard({ name }) {
   const [showInput, setShowInput] = React.useState(false);
-  const [textField, setTextField] = React.useState(name);
+  const [textField, setTextField] = React.useState('');
+
+  useEffect(() => {
+    setTextField(name);
+  }, [name]);
 
   const handleChangeTextField = (e) => {
     e.target.value.length > 40 ? '' : setTextField(e.target.value);

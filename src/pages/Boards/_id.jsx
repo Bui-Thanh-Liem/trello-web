@@ -16,21 +16,17 @@ const Broad = () => {
     const boardId = '65dae35b8bc14e5495f6cd64';
 
     // Call API
-    fetchBoardDetailsAPI(boardId)
-      .then((board) => {
-        console.log('board', board);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    fetchBoardDetailsAPI(boardId).then((board) => {
+      setBoard(board);
+    });
   }, []);
 
   return (
     <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
       <AppBar />
       <DrawerLeft
-        bar={<BoardBar board={mockData?.board} />}
-        content={<BoardContent board={mockData?.board} />}
+        bar={<BoardBar board={board} />}
+        content={<BoardContent board={board} />}
       />
     </Container>
   );
