@@ -20,12 +20,14 @@ const theme = extendTheme({
       palette: {
         primary: teal,
         secondary: deepOrange
+        // black: black
       }
     },
     dark: {
       palette: {
         primary: cyan,
         secondary: orange
+        // black: black
       }
     }
   },
