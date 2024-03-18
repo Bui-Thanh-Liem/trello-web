@@ -3,8 +3,8 @@ import {
   DndContext,
   useSensor,
   useSensors,
-  MouseSensor,
-  TouchSensor,
+  // MouseSensor,
+  // TouchSensor,
   DragOverlay,
   defaultDropAnimationSideEffects,
   pointerWithin,
@@ -16,6 +16,7 @@ import { useCallback, useEffect, useState, useRef } from 'react';
 import { cloneDeep, isEmpty } from 'lodash';
 
 //
+import { MouseSensor, TouchSensor } from '~/customLibs/DndKitSensor.js';
 import Columns from './Columns';
 import Column from './Columns/Column';
 import Card from './Columns/Column/Cards/Card';

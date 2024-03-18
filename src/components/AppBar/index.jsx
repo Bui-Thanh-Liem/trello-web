@@ -5,12 +5,15 @@ import {
   TextField,
   Badge,
   Tooltip,
-  IconButton
+  IconButton,
+  InputAdornment
 } from '@mui/material';
 import AppsIcon from '@mui/icons-material/Apps';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 import SvgIcon from '@mui/material/SvgIcon';
 
 import DarkModeSelect from '~/components/DarkMode';
@@ -20,8 +23,13 @@ import Recent from './menus/Recent';
 import Starred from './menus/Starred';
 import Templates from './menus/Templates';
 import Profiles from './menus/Profiles';
+import { useState } from 'react';
 
 const AppBar = () => {
+  const [searchValue, setSearchValue] = useState('');
+  const handleClickSearch = () => {
+    console.log(`Searching ${searchValue}`);
+  };
   return (
     <Box
       sx={{
@@ -79,6 +87,28 @@ const AppBar = () => {
             size="small"
             variant="outlined"
             sx={{ minWidth: 120 }}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon onClick={() => handleClickSearch()} />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="start">
+                  <CloseIcon
+                    sx={{
+                      color: () => {
+                        return !searchValue.trim() ? 'transparent' : '';
+                      },
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => setSearchValue('')}
+                  />
+                </InputAdornment>
+              )
+            }}
           />
         </Tooltip>
         <DarkModeSelect />
