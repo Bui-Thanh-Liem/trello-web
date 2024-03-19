@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Box, Button, IconButton, TextField, colors } from '@mui/material';
+import { Box, Button, IconButton, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   SortableContext,
   horizontalListSortingStrategy
 } from '@dnd-kit/sortable';
+import { toast } from 'react-toastify';
+
 //
 import Column from './Column';
 
@@ -18,13 +20,19 @@ export default function Columns({ columns }) {
     setValueInputNewColumn('');
   };
 
+  const handleKeyDownInputNewColumn = (e) => {
+    if (e.keyCode !== 13) return;
+    toast.success(`Call API to add a new column: ${valueInputNewColumn}`);
+    toggleOpenFormCreateColumn();
+  };
+
   const handleClickAddList = () => {
     if (!valueInputNewColumn.trim()) {
-      console.error('Toast: please enter a title for the new column');
+      toast.error('Please enter a new column title.');
       return;
     }
 
-    console.log('Call API create new column: ', valueInputNewColumn);
+    toast.success(`Call API to add a new column: ${valueInputNewColumn}`);
     toggleOpenFormCreateColumn();
   };
 
@@ -82,7 +90,7 @@ export default function Columns({ columns }) {
             <Box
               sx={{ p: 1, bgcolor: '#fff', borderRadius: 2, transition: '2s' }}
             >
-              <form action="">
+              <form action="" onSubmit={(e) => e.preventDefault()}>
                 <TextField
                   id=""
                   label="New board name..."
@@ -99,6 +107,7 @@ export default function Columns({ columns }) {
                   }}
                   value={valueInputNewColumn}
                   onChange={(e) => setValueInputNewColumn(e.target.value)}
+                  onKeyDown={handleKeyDownInputNewColumn}
                 />
                 <Box sx={{ marginTop: 0.5 }}>
                   <Button
