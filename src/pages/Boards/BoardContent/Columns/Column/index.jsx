@@ -18,6 +18,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { toast } from 'react-toastify';
+
 //
 import Cards from './Cards';
 import { mapOrder } from '~/utils/sorts';
@@ -49,11 +51,18 @@ export default function Column({ column }) {
   };
   const handleClickAddCard = () => {
     if (!valueInputNewCard) {
-      console.error('Toast: Please enter a new card title');
+      toast.error('Please enter a new card title');
       return;
     }
 
-    console.log(`Call API to add card: ${valueInputNewCard}`);
+    toast.success(`Call API to add a new card: ${valueInputNewCard}`);
+    toggleOpenFormCreateCard();
+  };
+
+  const handleKeyDownInputNewColumn = (e) => {
+    if (e.keyCode !== 13) return;
+    toast.success(`Call API to add a new card: ${valueInputNewCard}`);
+    toggleOpenFormCreateCard();
   };
 
   const cardsOrdered = mapOrder(column?.cards, column?.cardOrderIds, '_id');
@@ -188,7 +197,7 @@ export default function Column({ column }) {
               padding: '.5rem 1rem'
             }}
           >
-            <Button startIcon={<AddIcon />} onClick={toggleOpenFormCreateCard}>
+            <Button onClick={toggleOpenFormCreateCard} startIcon={<AddIcon />}>
               Add a Card
             </Button>
             <Box>
@@ -278,6 +287,7 @@ export default function Column({ column }) {
                 data-no-dnd={true}
                 value={valueInputNewCard}
                 onChange={(e) => setValueInputNewCard(e.target.value)}
+                onKeyDown={handleKeyDownInputNewColumn}
               />
               <Box sx={{ marginTop: 0.5 }}>
                 <Button
