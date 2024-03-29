@@ -21,7 +21,6 @@ import { MouseSensor, TouchSensor } from '~/customLibs/DndKitSensor.js';
 import Columns from './Columns';
 import Column from './Columns/Column';
 import Card from './Columns/Column/Cards/Card';
-import { mapOrder } from '~/utils/sorts';
 import { generatePlaceholderCard } from '~/utils/formatters';
 import { moveColumns } from '~/redux/slices/boardSlice';
 import { moveCards } from '~/redux/slices/columnSlice';
@@ -220,11 +219,9 @@ const BoardContent = ({ board }) => {
         const oldIndex = activeColumnBeforeRerender?.cards?.findIndex(
           (card) => card._id === activeDragItemId
         );
-        console.log('oldIndex', oldIndex);
         const newIndex = overColumn?.cards?.findIndex(
           (card) => card._id === overId
         );
-        console.log('newIndex', newIndex);
 
         const orderedArrMove = arrayMove(
           activeColumnBeforeRerender.cards,
@@ -382,12 +379,12 @@ const BoardContent = ({ board }) => {
         <DragOverlay dropAnimation={dropAnimation}>
           {activeDragItemId &&
           activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (
-            <Column column={activeDragItemData} />
-          ) : null}
+              <Column column={activeDragItemData} />
+            ) : null}
           {activeDragItemId &&
           activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD ? (
-            <Card card={activeDragItemData} />
-          ) : null}
+              <Card card={activeDragItemData} />
+            ) : null}
         </DragOverlay>
       </Box>
     </DndContext>
