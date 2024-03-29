@@ -7,13 +7,18 @@ import {
   horizontalListSortingStrategy
 } from '@dnd-kit/sortable';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
 
 //
 import Column from './Column';
+import { boardSelector } from '~/redux/selectors/boardSelector';
+import { createNewColumn } from '~/redux/slices/columnSlice';
 
 export default function Columns({ columns }) {
   const [openFormCreateColumn, setOpenFormCreateColumn] = useState(false);
   const [valueInputNewColumn, setValueInputNewColumn] = useState('');
+  const dispatch = useDispatch();
+  const board = useSelector(boardSelector);
 
   const toggleOpenFormCreateColumn = () => {
     setOpenFormCreateColumn(!openFormCreateColumn);
@@ -22,7 +27,16 @@ export default function Columns({ columns }) {
 
   const handleKeyDownInputNewColumn = (e) => {
     if (e.keyCode !== 13) return;
-    toast.success(`Call API to add a new column: ${valueInputNewColumn}`);
+    if (!valueInputNewColumn.trim()) {
+      toast.error('Please enter a new column title.');
+      return;
+    }
+    dispatch(
+      createNewColumn({
+        title: valueInputNewColumn,
+        boardId: board._id
+      })
+    );
     toggleOpenFormCreateColumn();
   };
 
@@ -32,7 +46,13 @@ export default function Columns({ columns }) {
       return;
     }
 
-    toast.success(`Call API to add a new column: ${valueInputNewColumn}`);
+    dispatch(
+      createNewColumn({
+        title: valueInputNewColumn,
+        boardId: board._id
+      })
+    );
+    toast.success('Success create new a column');
     toggleOpenFormCreateColumn();
   };
 
