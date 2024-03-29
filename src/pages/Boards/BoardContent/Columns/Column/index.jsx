@@ -19,12 +19,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
 
 //
 import Cards from './Cards';
-import { mapOrder } from '~/utils/sorts';
+import { boardSelector } from '~/redux/selectors/boardSelector';
+import { createNewCard } from '~/redux/slices/cardSlice';
 
 export default function Column({ column }) {
+  const board = useSelector(boardSelector);
+  const dispatch = useDispatch();
+
   const [option, setOption] = useState(null);
   const [template, setTemplate] = useState(null);
   const [openFormCreateCard, setOpenFormCreateCard] = useState(false);
@@ -55,17 +60,33 @@ export default function Column({ column }) {
       return;
     }
 
-    toast.success(`Call API to add a new card: ${valueInputNewCard}`);
+    dispatch(
+      createNewCard({
+        title: valueInputNewCard,
+        boardId: board._id,
+        columnId: column._id
+      })
+    );
     toggleOpenFormCreateCard();
   };
 
-  const handleKeyDownInputNewColumn = (e) => {
+  const handleKeyDownInputNewCard = (e) => {
     if (e.keyCode !== 13) return;
-    toast.success(`Call API to add a new card: ${valueInputNewCard}`);
+    if (!valueInputNewCard.trim()) {
+      toast.error('Please enter a new card title.');
+      return;
+    }
+    dispatch(
+      createNewCard({
+        title: valueInputNewCard,
+        boardId: board._id,
+        columnId: column._id
+      })
+    );
     toggleOpenFormCreateCard();
   };
 
-  const cardsOrdered = mapOrder(column?.cards, column?.cardOrderIds, '_id');
+  const cardsOrdered = column?.cards;
 
   // Drag - Drop
   const {
@@ -269,7 +290,7 @@ export default function Column({ column }) {
               borderRadius: 2
             }}
           >
-            <form action="">
+            <form action="" onSubmit={(e) => e.preventDefault()}>
               <TextField
                 id=""
                 label="New card name..."
@@ -287,7 +308,7 @@ export default function Column({ column }) {
                 data-no-dnd={true}
                 value={valueInputNewCard}
                 onChange={(e) => setValueInputNewCard(e.target.value)}
-                onKeyDown={handleKeyDownInputNewColumn}
+                onKeyDown={handleKeyDownInputNewCard}
               />
               <Box sx={{ marginTop: 0.5 }}>
                 <Button

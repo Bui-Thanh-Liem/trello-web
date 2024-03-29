@@ -14,14 +14,16 @@ import {
 import { arrayMove } from '@dnd-kit/sortable';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { cloneDeep, isEmpty } from 'lodash';
+import { useDispatch } from 'react-redux';
 
 //
 import { MouseSensor, TouchSensor } from '~/customLibs/DndKitSensor.js';
 import Columns from './Columns';
 import Column from './Columns/Column';
 import Card from './Columns/Column/Cards/Card';
-import { mapOrder } from '~/utils/sorts';
 import { generatePlaceholderCard } from '~/utils/formatters';
+import { moveColumns } from '~/redux/slices/boardSlice';
+import { moveCards } from '~/redux/slices/columnSlice';
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -29,6 +31,8 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 };
 
 const BoardContent = ({ board }) => {
+  const dispatch = useDispatch();
+
   // MapOrdered
   const [orderedColumnsState, setOrderedColumnsState] = useState([]);
 
@@ -42,9 +46,7 @@ const BoardContent = ({ board }) => {
     useState(null);
 
   useEffect(() => {
-    setOrderedColumnsState(
-      mapOrder(board?.columns, board?.columnOrderIds, '_id')
-    );
+    setOrderedColumnsState(board?.columns);
   }, [board]);
 
   // Tìm column đang chứa cardId (làm dữ liệu cards rồi mới làm cho orderCard)
@@ -122,7 +124,9 @@ const BoardContent = ({ board }) => {
         });
 
         // Xóa placeholder-card đi khi đã có card tồn tại
-        nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_placeholderCard);
+        nextOverColumn.cards = nextOverColumn.cards.filter(
+          (card) => !card.FE_placeholderCard
+        );
 
         // Cập nhật idCard trong cardOrderIds sau khi xóa cards
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(
@@ -235,9 +239,16 @@ const BoardContent = ({ board }) => {
           targetColumns.cardOrderIds = orderedArrMove?.map(
             (column) => column._id
           );
-
           return cloneColumns;
         });
+
+        // Call api kéo thả card trong cùng 1 column
+        dispatch(
+          moveCards({
+            columnId: activeColumnBeforeRerender._id,
+            orderedCard: orderedArrMove
+          })
+        );
       }
     }
 
@@ -252,10 +263,15 @@ const BoardContent = ({ board }) => {
       const newIndex = orderedColumnsState.findIndex(
         (column) => column._id === over.id
       );
+
+      // Array moved
       const orderedArrMove = arrayMove(orderedColumnsState, oldIndex, newIndex);
-      // Call API update datas
-      // const orderedArrMoveIds = orderedArrMove.map((column) => column._id);
+
+      // Vẫn có bước này để ứng dụng không bị nhấp nhấy.
       setOrderedColumnsState(orderedArrMove);
+
+      // Call API update datas
+      dispatch(moveColumns(orderedArrMove));
     }
 
     // Những State này chỉ dùng 1 lần khi kéo column hoặc kéo card nên set lại null để thực hiện lần kéo tiếp theo
@@ -362,9 +378,13 @@ const BoardContent = ({ board }) => {
         {/* DragOverlay đặt ngang cấp với Sortable và có item bên trong là tất cả SortItem */}
         <DragOverlay dropAnimation={dropAnimation}>
           {activeDragItemId &&
-          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (<Column column={activeDragItemData} />) : null}
+          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (
+              <Column column={activeDragItemData} />
+            ) : null}
           {activeDragItemId &&
-          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD ? (<Card card={activeDragItemData} />) : null}
+          activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD ? (
+              <Card card={activeDragItemData} />
+            ) : null}
         </DragOverlay>
       </Box>
     </DndContext>

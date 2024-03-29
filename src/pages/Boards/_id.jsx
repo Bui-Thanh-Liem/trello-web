@@ -1,25 +1,42 @@
 import { Container } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 //
 import AppBar from '~/components/AppBar/';
 import BoardBar from './BoardBar';
 import BoardContent from './BoardContent';
 import DrawerLeft from './DrawerLeft';
-// import { mockData } from '~/apis/mockData';
-import { fetchBoardDetailsAPI } from '~/apis';
+import { boardSelector } from '~/redux/selectors/boardSelector';
+import { fetchBoardDetails } from '~/redux/slices/boardSlice';
 
 const Broad = () => {
-  const [board, setBoard] = useState(null);
+  const dispatch = useDispatch();
+  const board = useSelector(boardSelector);
 
   useEffect(() => {
-    const boardId = '65f9b47c1d87b9be4e71db17';
-
     // Call API
-    fetchBoardDetailsAPI(boardId).then((board) => {
-      setBoard(board);
-    });
+    const boardId = '65f9b47c1d87b9be4e71db17';
+    dispatch(fetchBoardDetails(boardId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!board) {
+    return (
+      <Box
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
