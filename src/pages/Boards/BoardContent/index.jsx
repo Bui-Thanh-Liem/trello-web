@@ -22,8 +22,11 @@ import Columns from './Columns';
 import Column from './Columns/Column';
 import Card from './Columns/Column/Cards/Card';
 import { generatePlaceholderCard } from '~/utils/formatters';
-import { moveColumns } from '~/redux/slices/boardSlice';
-import { moveCards } from '~/redux/slices/columnSlice';
+import { moveColumns } from '~/redux/thunk/board';
+import {
+  moveCardsInTheSameColumn,
+  moveCardTodifferentColumn
+} from '~/redux/thunk/column';
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -64,7 +67,8 @@ const BoardContent = ({ board }) => {
     over,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardData
+    activeDraggingCardData,
+    triggerFrom
   ) => {
     setOrderedColumnsState((preveColumnsState) => {
       //  Tìm vị trí của overCardIndex (card trong column đích)
@@ -134,6 +138,18 @@ const BoardContent = ({ board }) => {
         );
       }
 
+      if (triggerFrom === 'handleDragEnd') {
+        // Call api drag card to different column
+        dispatch(
+          moveCardTodifferentColumn({
+            currentCardId: activeDraggingCardId,
+            prevColumnId: activeColumnBeforeRerender._id,
+            nextColumnId: nextOverColumn._id,
+            dndOrderedColumn: nextColumns
+          })
+        );
+      }
+
       return nextColumns;
     });
   };
@@ -181,7 +197,8 @@ const BoardContent = ({ board }) => {
         over,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardData
+        activeDraggingCardData,
+        'handleDragOver'
       );
     }
   };
@@ -213,7 +230,8 @@ const BoardContent = ({ board }) => {
           over,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardData
+          activeDraggingCardData,
+          'handleDragEnd'
         );
       } else {
         const oldIndex = activeColumnBeforeRerender?.cards?.findIndex(
@@ -244,7 +262,7 @@ const BoardContent = ({ board }) => {
 
         // Call api kéo thả card trong cùng 1 column
         dispatch(
-          moveCards({
+          moveCardsInTheSameColumn({
             columnId: activeColumnBeforeRerender._id,
             orderedCard: orderedArrMove
           })
@@ -379,12 +397,12 @@ const BoardContent = ({ board }) => {
         <DragOverlay dropAnimation={dropAnimation}>
           {activeDragItemId &&
           activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (
-              <Column column={activeDragItemData} />
-            ) : null}
+            <Column column={activeDragItemData} />
+          ) : null}
           {activeDragItemId &&
           activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD ? (
-              <Card card={activeDragItemData} />
-            ) : null}
+            <Card card={activeDragItemData} />
+          ) : null}
         </DragOverlay>
       </Box>
     </DndContext>

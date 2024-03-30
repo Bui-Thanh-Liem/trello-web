@@ -10,7 +10,7 @@ import BoardBar from './BoardBar';
 import BoardContent from './BoardContent';
 import DrawerLeft from './DrawerLeft';
 import { boardSelector } from '~/redux/selectors/boardSelector';
-import { fetchBoardDetails } from '~/redux/slices/boardSlice';
+import { fetchBoardDetails } from '~/redux/thunk/board';
 
 const Broad = () => {
   const dispatch = useDispatch();

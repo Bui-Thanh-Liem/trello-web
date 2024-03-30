@@ -1,44 +1,19 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { cloneDeep, isEmpty } from 'lodash';
+import { toast } from 'react-toastify';
 
 //
-import { fetchBoardDetailsAPI, updateBoardDetailsAPI } from '~/apis';
+import { fetchBoardDetails, moveColumns } from '~/redux/thunk/board';
+import {
+  createNewColumn,
+  moveCardsInTheSameColumn,
+  moveCardTodifferentColumn
+} from '~/redux/thunk/column';
+import { createNewCard } from '~/redux/thunk/card';
 import { generatePlaceholderCard } from '~/utils/formatters';
-import { createNewColumn, moveCards } from '~/redux/slices/columnSlice';
-import { createNewCard } from '~/redux/slices/cardSlice';
 import { mapOrder } from '~/utils/sorts';
 
 const initialState = {};
-
-export const fetchBoardDetails = createAsyncThunk(
-  'board/fetchBoardDetails',
-  async (boardId, thunkAPI) => {
-    try {
-      const board = await fetchBoardDetailsAPI(boardId);
-      return thunkAPI.fulfillWithValue(board);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const moveColumns = createAsyncThunk(
-  'column/moveColumns',
-  async (orderedColumns, thunkAPI) => {
-    try {
-      const orderedColumnIds = orderedColumns.map((c) => c._id);
-      await updateBoardDetailsAPI(orderedColumns[0].boardId, {
-        columnOrderIds: orderedColumnIds
-      });
-      return thunkAPI.fulfillWithValue({
-        columnOrderIds: orderedColumnIds,
-        columns: orderedColumns
-      });
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
 
 const boardSlice = createSlice({
   name: 'board',
@@ -86,10 +61,16 @@ const boardSlice = createSlice({
 
       state.board.columns.push(action.payload);
       state.board.columnOrderIds.push(action.payload._id);
+      toast.success('Success create new a column');
     });
     builder.addCase(moveColumns.fulfilled, (state, action) => {
       state.board.columnOrderIds = action.payload.columnOrderIds;
       state.board.columns = action.payload.columns;
+    });
+    builder.addCase(moveCardTodifferentColumn.fulfilled, (state, action) => {
+      const columnOrderIds = action.payload.map((c) => c._id);
+      state.board.columnOrderIds = columnOrderIds;
+      state.board.columns = action.payload;
     });
 
     // Cards
@@ -97,10 +78,18 @@ const boardSlice = createSlice({
       const currentColumn = state.board.columns.find(
         (col) => col._id === action.payload.columnId
       );
-      currentColumn.cards.push(action.payload);
-      currentColumn.cardOrderIds.push(action.payload._id);
+      if (currentColumn) {
+        if (currentColumn.cards.some((card) => card.FE_placeholderCard)) {
+          currentColumn.cards = [action.payload];
+          currentColumn.cardOrderIds = [action.payload._id];
+        } else {
+          currentColumn.cards.push(action.payload);
+          currentColumn.cardOrderIds.push(action.payload._id);
+          toast.success('Success create new a Card');
+        }
+      }
     });
-    builder.addCase(moveCards.fulfilled, (state, action) => {
+    builder.addCase(moveCardsInTheSameColumn.fulfilled, (state, action) => {
       const currentColumn = state.board.columns.find(
         (col) => col._id === action.payload.columnId
       );

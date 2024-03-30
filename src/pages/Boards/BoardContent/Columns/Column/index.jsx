@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 //
 import Cards from './Cards';
 import { boardSelector } from '~/redux/selectors/boardSelector';
-import { createNewCard } from '~/redux/slices/cardSlice';
+import { createNewCard } from '~/redux/thunk/card';
 
 export default function Column({ column }) {
   const board = useSelector(boardSelector);
