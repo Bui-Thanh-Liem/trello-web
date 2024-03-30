@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 //
 import Column from './Column';
 import { boardSelector } from '~/redux/selectors/boardSelector';
-import { createNewColumn } from '~/redux/slices/columnSlice';
+import { createNewColumn } from '~/redux/thunk/column';
 
 export default function Columns({ columns }) {
   const [openFormCreateColumn, setOpenFormCreateColumn] = useState(false);
@@ -52,7 +52,6 @@ export default function Columns({ columns }) {
         boardId: board._id
       })
     );
-    toast.success('Success create new a column');
     toggleOpenFormCreateColumn();
   };
 
