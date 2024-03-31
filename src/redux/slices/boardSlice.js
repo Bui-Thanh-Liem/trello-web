@@ -7,7 +7,8 @@ import { fetchBoardDetails, moveColumns } from '~/redux/thunk/board';
 import {
   createNewColumn,
   moveCardsInTheSameColumn,
-  moveCardTodifferentColumn
+  moveCardTodifferentColumn,
+  deleteColumn
 } from '~/redux/thunk/column';
 import { createNewCard } from '~/redux/thunk/card';
 import { generatePlaceholderCard } from '~/utils/formatters';
@@ -72,6 +73,19 @@ const boardSlice = createSlice({
       state.board.columnOrderIds = columnOrderIds;
       state.board.columns = action.payload;
     });
+    builder.addCase(deleteColumn.fulfilled, (state, action) => {
+      const boardClone = cloneDeep(state.board);
+      const columns = boardClone.columns.filter(
+        (col) => col._id !== action.payload.columnId
+      );
+      const columnOrderIds = boardClone.columnOrderIds.filter(
+        (_id) => _id !== action.payload.columnId
+      );
+      state.board.columns = columns;
+      state.board.columnOrderIds = columnOrderIds;
+      if (action.payload.resultMessage)
+        toast.success(action.payload.resultMessage);
+    });
 
     // Cards
     builder.addCase(createNewCard.fulfilled, (state, action) => {
@@ -85,8 +99,8 @@ const boardSlice = createSlice({
         } else {
           currentColumn.cards.push(action.payload);
           currentColumn.cardOrderIds.push(action.payload._id);
-          toast.success('Success create new a Card');
         }
+        toast.success('Success create new a Card');
       }
     });
     builder.addCase(moveCardsInTheSameColumn.fulfilled, (state, action) => {

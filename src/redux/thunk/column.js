@@ -3,7 +3,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   createNewColumnAPI,
   updateColumnAPI,
-  moveCardTodifferentColumn as moveCardToDifferentCol
+  moveCardTodifferentColumn as moveCardToDifferentCol,
+  deleteColumnAPI
 } from '~/apis';
 
 export const createNewColumn = createAsyncThunk(
@@ -12,6 +13,18 @@ export const createNewColumn = createAsyncThunk(
     try {
       const newColumn = await createNewColumnAPI(newColumnData);
       return thunkAPI.fulfillWithValue(newColumn);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteColumn = createAsyncThunk(
+  'column/deleteColumn',
+  async (columnId, thunkAPI) => {
+    try {
+      const { resultMessage } = await deleteColumnAPI(columnId);
+      return thunkAPI.fulfillWithValue({ resultMessage, columnId });
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

@@ -1,7 +1,7 @@
 // axios.interceptors.request.use() để đăng ký interceptor request
 // axios.interceptors.response.use() để đăng ký interceptor response.
 
-import { API_ROOT } from '~/utils/constants';
+import API_ROOT from './api_root';
 import axios from 'axios';
 
 // Board
@@ -34,6 +34,11 @@ export const updateColumnAPI = async (columnId, updateData) => {
     `${API_ROOT}/v1/columns/${columnId}`,
     updateData
   );
+  return reponse.data;
+};
+
+export const deleteColumnAPI = async (columnId) => {
+  const reponse = await axios.delete(`${API_ROOT}/v1/columns/${columnId}`);
   return reponse.data;
 };
 
