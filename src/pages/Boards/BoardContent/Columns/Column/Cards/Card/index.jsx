@@ -43,14 +43,15 @@ export default function Card({ card }) {
         {...attributes}
         {...listeners}
         sx={{
+          borderRadius: '8px',
           cursor: 'pointer',
           overflow: 'unset',
-          boxShadow: '1px 1px rgba(0, 0, 0, .2)',
+          boxShadow:
+            '-2px -3px rgba(0, 0, 0, .2), inset -2px -2px rgba(0, 0, 0, .1)',
           border: '1px solid transparent',
           display: card?.FE_placeholderCard ? 'none' : 'block',
           '&:hover': {
-            boxShadow: (theme) =>
-              `0px 0px 2px 2px ${theme.palette.primary.light}`
+            boxShadow: (theme) => `2px 3px ${theme.palette.primary.light}`
           },
           '&:first-of-type': {
             marginTop: 1

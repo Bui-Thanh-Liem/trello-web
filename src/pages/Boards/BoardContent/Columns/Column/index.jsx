@@ -15,20 +15,28 @@ import IconButton from '@mui/material/IconButton';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import AddIcon from '@mui/icons-material/Add';
+import ContentCutIcon from '@mui/icons-material/ContentCut';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CloudIcon from '@mui/icons-material/Cloud';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
+import { useConfirm } from 'material-ui-confirm';
 
 //
 import Cards from './Cards';
 import { boardSelector } from '~/redux/selectors/boardSelector';
 import { createNewCard } from '~/redux/thunk/card';
+import { deleteColumn } from '~/redux/thunk/column';
 
 export default function Column({ column }) {
   const board = useSelector(boardSelector);
   const dispatch = useDispatch();
+  const confirmDeleteColumn = useConfirm();
 
   const [option, setOption] = useState(null);
   const [template, setTemplate] = useState(null);
@@ -84,6 +92,27 @@ export default function Column({ column }) {
       })
     );
     toggleOpenFormCreateCard();
+  };
+
+  //
+  const handleClickDeleteColumn = () => {
+    confirmDeleteColumn({
+      description:
+        'This column will be permanently deleted and its cards, Are you sure?',
+      title: 'Delete Column',
+      dialogProps: { maxWidth: 'xs' }
+
+      // confirmationKeyword: 'liem',
+      // confirmationKeywordTextFieldProps: {
+      //   autoFocus: true,
+      //   label: 'Nhap liem'
+      // }
+      // allowClose: false
+    })
+      .then(() => {
+        dispatch(deleteColumn(column._id));
+      })
+      .catch(() => () => {});
   };
 
   const cardsOrdered = column?.cards;
@@ -151,9 +180,7 @@ export default function Column({ column }) {
                 '&.MuiButtonBase-root': {
                   padding: 0
                 },
-                cursor: 'pointer',
-                overflow: 'unset',
-                color: 'primary.main'
+                overflow: 'unset'
               }}
               onClick={handleClickOpenOption}
             >
@@ -165,37 +192,57 @@ export default function Column({ column }) {
               id="basic-menu-recent"
               anchorEl={option}
               open={openOption}
-              onClose={handleCloseOption}
+              onClick={handleCloseOption}
               MenuListProps={{
                 'aria-labelledby': 'basic-button-columnCard-options'
               }}
             >
-              <MenuList dense>
-                <MenuItem onClick={handleCloseOption}>
-                  <ListItemText inset>Single</ListItemText>
+              <MenuList>
+                <MenuItem onClick={toggleOpenFormCreateCard}>
+                  <ListItemIcon>
+                    <AddIcon />
+                  </ListItemIcon>
+                  <ListItemText>Add new card</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={handleCloseOption}>
-                  <ListItemText inset>1.15</ListItemText>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCutIcon />
+                  </ListItemIcon>
+                  <ListItemText>Cut</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={handleCloseOption}>
-                  <ListItemText inset>Double</ListItemText>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCopyIcon />
+                  </ListItemIcon>
+                  <ListItemText>Copy</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentPasteIcon />
+                  </ListItemIcon>
+                  <ListItemText>Paste</ListItemText>
+                </MenuItem>
+                <MenuItem
+                  sx={{
+                    '&:hover': {
+                      color: 'warning.dark',
+                      '& .detele-icon': {
+                        color: 'warning.dark'
+                      }
+                    }
+                  }}
+                  onClick={handleClickDeleteColumn}
+                >
+                  <ListItemIcon>
+                    <DeleteIcon className="detele-icon" />
+                  </ListItemIcon>
+                  <ListItemText>Remove this column</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleCloseOption}>
                   <ListItemIcon>
-                    <MoreHorizIcon />
+                    <CloudIcon />
                   </ListItemIcon>
-                  Custom: 1.2
-                </MenuItem>
-                <MoreHorizIcon />
-                <MenuItem onClick={handleCloseOption}>
-                  <ListItemText>Add space before paragraph</ListItemText>
-                </MenuItem>
-                <MenuItem onClick={handleCloseOption}>
-                  <ListItemText>Add space after paragraph</ListItemText>
-                </MenuItem>
-                <MoreHorizIcon />
-                <MenuItem onClick={handleCloseOption}>
-                  <ListItemText>Custom spacing...</ListItemText>
+                  <ListItemText>Archive this column</ListItemText>
                 </MenuItem>
               </MenuList>
             </Menu>
