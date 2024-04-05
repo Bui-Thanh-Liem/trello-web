@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -34,6 +34,10 @@ const Broad = () => {
         }}
       >
         <CircularProgress />
+        <Typography sx={{ marginLeft: 2 }}>
+          This process takes about 10 seconds because the API server is a free
+          server, please ❤️
+        </Typography>
       </Box>
     );
   }
